@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Năm Mới - Lời Chúc Từ Lĩnh VN</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -31,6 +31,13 @@
             cursor: default;
             line-height: 1.6;
             position: relative;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
         /* ===== SPARKLE PARTICLES CANVAS ===== */
         #sparkleCanvas {
@@ -41,6 +48,7 @@
             height: 100%;
             z-index: 3;
             pointer-events: none;
+            will-change: transform;
         }
         /* ===== CANVAS ELEMENTS ===== */
         #starCanvas, #fireworkCanvas {
@@ -50,6 +58,7 @@
             width: 100%;
             height: 100%;
             z-index: 1;
+            will-change: transform;
         }
         #fireworkCanvas {
             z-index: 99;
@@ -163,6 +172,7 @@
             width: 90%;
             opacity: 0;
             transition: opacity 0.5s ease-out;
+            will-change: opacity, transform;
         }
         .step.active {
             display: block;
@@ -198,6 +208,8 @@
             color: var(--text-pink);
             letter-spacing: 2px;
             text-shadow: var(--shadow-glow);
+            word-break: break-word;
+            hyphens: auto;
         }
         @keyframes pulse-glow {
             0%, 100% {
@@ -217,6 +229,8 @@
             color: var(--text-light);
             text-shadow: var(--shadow-glow);
             transform: translateY(20px);
+            word-break: break-word;
+            hyphens: auto;
         }
         .text-line.show {
             animation: textReveal 2s ease-out forwards;
@@ -260,6 +274,10 @@
             overflow: hidden;
             letter-spacing: 1px;
             backdrop-filter: blur(10px);
+            min-height: 48px;
+            touch-action: manipulation;
+            -webkit-appearance: none;
+            will-change: transform;
         }
         .btn::before {
             content: '';
@@ -273,11 +291,11 @@
             transform: translate(-50%, -50%);
             transition: width 0.6s ease-out, height 0.6s ease-out;
         }
-        .btn:hover::before {
+        .btn:hover::before, .btn:active::before {
             width: 300px;
             height: 300px;
         }
-        .btn:hover {
+        .btn:hover, .btn:focus {
             transform: translateY(-5px);
             box-shadow: 0 15px 50px rgba(102, 126, 234, 0.6);
         }
@@ -291,6 +309,7 @@
             color: #fff;
             text-shadow: 0 0 40px rgba(255, 255, 255, 0.8);
             animation: scaleUp 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+            will-change: transform;
         }
         @keyframes scaleUp {
             from {
@@ -325,6 +344,7 @@
             transform: rotateY(0deg) scale(0.8);
             transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             backface-visibility: hidden;
+            will-change: transform, opacity;
         }
         .memory-card.active {
             opacity: 1;
@@ -354,6 +374,7 @@
             height: 100%;
             object-fit: cover;
             transition: transform 0.5s ease-out;
+            loading: lazy;
         }
         .memory-card:hover img {
             transform: scale(1.05);
@@ -374,10 +395,13 @@
             color: var(--text-pink);
             font-style: italic;
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+            word-break: break-word;
+            hyphens: auto;
         }
         /* ===== CLIMAX SCREEN ===== */
         .climax-container {
             animation: screenShake 0.5s ease-out;
+            will-change: transform;
         }
         @keyframes screenShake {
             0%, 100% { transform: translate(0, 0); }
@@ -392,6 +416,9 @@
             text-shadow: 0 0 40px rgba(255, 107, 157, 1);
             line-height: 1.6;
             animation: textGlitch 2s ease-in-out;
+            word-break: break-word;
+            hyphens: auto;
+            will-change: transform, color;
         }
         @keyframes textGlitch {
             0%, 100% { transform: translate(0); color: #ff6b9d; }
@@ -409,6 +436,7 @@
             border: 2px solid rgba(255, 107, 157, 0.4);
             box-shadow: 0 20px 60px rgba(255, 107, 157, 0.4);
             animation: boxPulse 3s infinite ease-in-out;
+            will-change: transform, box-shadow;
         }
         @keyframes boxPulse {
             0%, 100% { transform: scale(1); box-shadow: 0 20px 60px rgba(255, 107, 157, 0.4); }
@@ -421,6 +449,8 @@
             color: var(--text-pink);
             line-height: 1.8;
             text-shadow: 0 0 20px rgba(255, 214, 232, 0.6);
+            word-break: break-word;
+            hyphens: auto;
         }
         .choice-btns {
             display: flex;
@@ -464,6 +494,9 @@
             cursor: grab;
             transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
             user-select: none;
+            touch-action: pan-x pan-y;
+            will-change: transform;
+            loading: lazy;
         }
         .flying-photo:hover {
             transform: scale(1.1);
@@ -491,6 +524,7 @@
             align-items: center;
             z-index: 1000;
             animation: fadeIn 0.3s ease-out;
+            touch-action: none;
         }
         .photo-modal.active {
             display: flex;
@@ -500,6 +534,7 @@
             max-height: 90%;
             position: relative;
             animation: zoomIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            will-change: transform;
         }
         @keyframes zoomIn {
             from {
@@ -518,6 +553,7 @@
             box-shadow: 0 20px 80px rgba(0, 0, 0, 0.9);
             border: 5px solid #fff;
             transition: transform 0.3s ease-out;
+            loading: lazy;
         }
         .modal-image:hover {
             transform: scale(1.02);
@@ -536,6 +572,8 @@
             cursor: pointer;
             backdrop-filter: blur(10px);
             transition: all 0.3s ease-out;
+            min-height: 48px;
+            touch-action: manipulation;
         }
         .modal-close:hover {
             background: rgba(255, 107, 157, 0.8);
@@ -549,11 +587,14 @@
             font-style: italic;
             color: var(--text-pink);
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+            word-break: break-word;
+            hyphens: auto;
         }
         /* ===== FINAL SCREEN ===== */
         .final-container {
             text-align: center;
             animation: finalReveal 3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            will-change: transform, opacity;
         }
         @keyframes finalReveal {
             0% {
@@ -579,6 +620,8 @@
             text-shadow: none;
             filter: drop-shadow(0 0 30px rgba(255, 107, 157, 0.8));
             background-size: 200% 200%;
+            word-break: break-word;
+            hyphens: auto;
         }
         @keyframes textShine {
             0%, 100% { background-position: 0% 50%; }
@@ -591,6 +634,8 @@
             font-style: italic;
             animation: subtitleFade 2s 1s ease-out backwards;
             text-shadow: var(--shadow-glow);
+            word-break: break-word;
+            hyphens: auto;
         }
         @keyframes subtitleFade {
             from {
@@ -609,6 +654,7 @@
             margin: 30px 0;
             text-shadow: 0 0 50px rgba(255, 255, 255, 0.8);
             animation: yearGlow 2s 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) backwards;
+            will-change: transform;
         }
         @keyframes yearGlow {
             from {
@@ -640,21 +686,48 @@
         }
         /* ===== RESPONSIVE DESIGN ===== */
         @media (max-width: 768px) {
-            .text-line { font-size: 1.5rem; line-height: 1.5; }
-            .memory-slide { width: 90%; height: 300px; }
+            .text-line { font-size: 1.5rem; line-height: 1.5; margin: 20px 0; }
+            .memory-slide { width: 100%; height: 40vh; min-height: 250px; }
             .climax-text { font-size: 2rem; line-height: 1.4; }
             .final-text { font-size: 2.5rem; }
             .year-number { font-size: 3rem; }
             .button-container { gap: 10px; }
-            .btn { padding: 15px 30px; font-size: 1.1rem; }
-            .choice-btns { gap: 20px; }
-            .question-text { font-size: 1.8rem; }
+            .btn { padding: 16px 32px; font-size: 1.1rem; min-height: 52px; }
+            .choice-btns { gap: 20px; flex-direction: column; align-items: center; }
+            .question-text { font-size: 1.8rem; line-height: 1.5; }
             .entrance-text { font-size: 1.4rem; }
             .snowflake { font-size: 14px; }
+            .entrance-icon { font-size: 60px; }
+            .countdown { font-size: 4rem; }
+            .question-box { padding: 40px 20px; margin: 0 10px; }
+            .memory-overlay { padding: 20px; }
+            .memory-text { font-size: 1.2rem; }
+            .modal-close { top: -40px; right: -10px; width: 45px; height: 45px; font-size: 1.8rem; }
+            .flying-photo { width: 100px; height: 100px; }
+            .step { padding: 20px; width: 95%; }
         }
         @media (max-width: 480px) {
-            .memory-slide { height: 250px; }
-            .question-box { padding: 40px 20px; }
+            .memory-slide { height: 30vh; min-height: 200px; }
+            .question-box { padding: 30px 15px; }
+            .btn { padding: 14px 24px; font-size: 1rem; min-height: 48px; }
+            .text-line { font-size: 1.3rem; }
+            .climax-text { font-size: 1.6rem; }
+            .final-text { font-size: 2rem; }
+            .year-number { font-size: 2.5rem; }
+            .entrance-icon { font-size: 50px; }
+            .countdown { font-size: 3rem; }
+            .choice-btns { gap: 15px; }
+            .button-container { gap: 15px; flex-direction: column; align-items: center; }
+            .flying-photo { width: 80px; height: 80px; border-width: 3px; }
+            .modal-close { top: -30px; right: -5px; width: 40px; height: 40px; font-size: 1.5rem; }
+            .step { padding: 15px; width: 98%; }
+        }
+        @media (orientation: landscape) and (max-height: 500px) {
+            .step { padding: 10px; }
+            .text-line { font-size: 1.2rem; margin: 10px 0; }
+            .btn { padding: 12px 20px; font-size: 1rem; }
+            .memory-slide { height: 50vh; }
+            .question-box { padding: 20px 15px; }
         }
         /* ===== ENHANCED SPARKLE EFFECTS ===== */
         .sparkle-enhanced {
@@ -678,6 +751,9 @@
             animation: slideIn 0.3s ease-out;
             backdrop-filter: blur(10px);
             box-shadow: 0 10px 30px rgba(255, 107, 157, 0.4);
+            font-size: 1rem;
+            max-width: 80%;
+            word-break: break-word;
         }
         @keyframes slideIn {
             from { transform: translateX(100%); opacity: 0; }
@@ -698,6 +774,12 @@
         @keyframes slideOutLeft {
             from { transform: translateX(0); opacity: 1; }
             to { transform: translateX(-100%); opacity: 0; }
+        }
+        /* Mobile-specific performance tweaks */
+        @media (max-width: 768px) {
+            .sparkle-enhanced { filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.4)); }
+            .shadow-soft { box-shadow: 0 4px 16px rgba(102, 126, 234, 0.2); }
+            .shadow-glow { text-shadow: 0 0 10px rgba(245, 230, 255, 0.3); }
         }
     </style>
 </head>
@@ -772,7 +854,7 @@
         <!-- BƯỚC 6: KẾT THÚC -->
         <div class="step" id="step6">
             <div class="final-container">
-                <div class="year-number sparkle-effect sparkle-enhanced">2026</div>
+                <div><h1>2026</h1></div>
                 <div><h2>Happy New Year Bestie</h2></div>
                 <div class="subtitle sparkle-effect sparkle-enhanced">Cảm ơn mày đã chịu đựng cái khùng của tao, hehe...</div>
                 <div class="button-container">
@@ -794,7 +876,6 @@
     <audio id="typeSound" preload="auto">
         <source src="assets/audio/type.mp3" type="audio/mpeg">
     </audio>
-
     <script>
         // ===== CONFIGURATION =====
         const CONFIG = {
@@ -819,7 +900,8 @@
                 "Chúc Xinh Đẹp ...",
                 "Nhớ Giàu Cho Tui Mượn Xiền hihih ...",
                 "Không có Khóc :))...",
-                "Mãi Bên Nhau Bạn Nhé iuiuiu..."
+                "Mãi Bên Nhau Bạn Nhé iuiuiu...",
+                "Chúc Sức Khỏe Dồi Dào Và Thành Công Rực Rỡ Nhé! "
             ],
             finalPhotos: [
                 {
@@ -876,6 +958,9 @@
         let sparkleCtx = null;
         let sparkles = [];
         let denyCount = 0;
+        // Mobile detection
+        const isMobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const mobileMultiplier = isMobile ? 0.6 : 1; // Reduce effects on mobile
         // ===== CANVAS INITIALIZATION =====
         function initStars() {
             const canvas = document.getElementById('starCanvas');
@@ -885,8 +970,10 @@
                 canvas.height = window.innerHeight;
             }
             resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
             const stars = [];
-            for (let i = 0; i < 200; i++) {
+            const starCount = isMobile ? 100 : 200; // Fewer stars on mobile
+            for (let i = 0; i < starCount; i++) {
                 stars.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
@@ -909,7 +996,6 @@
                 requestAnimationFrame(animate);
             }
             animate();
-            window.addEventListener('resize', resizeCanvas);
         }
         function initSparkles() {
             const canvas = document.getElementById('sparkleCanvas');
@@ -919,8 +1005,9 @@
                 canvas.height = window.innerHeight;
             }
             resizeCanvas();
-            // Create initial sparkles - increased for more sparkle
-            for (let i = 0; i < 80; i++) {
+            window.addEventListener('resize', resizeCanvas);
+            const sparkleCount = isMobile ? 40 : 80; // Fewer sparkles on mobile
+            for (let i = 0; i < sparkleCount; i++) {
                 createSparkle();
             }
             function animateSparkles() {
@@ -936,19 +1023,20 @@
                         sparkleCtx.beginPath();
                         sparkleCtx.arc(sparkle.x, sparkle.y, sparkle.size, 0, Math.PI * 2);
                         sparkleCtx.fillStyle = sparkle.color;
-                        sparkleCtx.shadowBlur = 15; /* Enhanced glow */
-                        sparkleCtx.shadowColor = sparkle.color;
+                        if (!isMobile) {
+                            sparkleCtx.shadowBlur = 15; /* Enhanced glow only on desktop */
+                            sparkleCtx.shadowColor = sparkle.color;
+                        }
                         sparkleCtx.fill();
                         sparkleCtx.restore();
                     }
                 });
                 sparkles = sparkles.filter(s => s.life > 0);
-                // Add new sparkles more frequently
-                if (Math.random() < 0.2) createSparkle();
+                // Add new sparkles less frequently on mobile
+                if (Math.random() < (isMobile ? 0.1 : 0.2)) createSparkle();
                 requestAnimationFrame(animateSparkles);
             }
             animateSparkles();
-            window.addEventListener('resize', resizeCanvas);
         }
         function createSparkle() {
             sparkles.push({
@@ -974,16 +1062,17 @@
         }
         // ===== ENHANCED FIREWORKS LOGIC =====
         function createFireworks(intensity = 1) {
+            const adjustedIntensity = isMobile ? intensity * 0.7 : intensity; // Reduce on mobile
             const fireworkSound = document.getElementById('fireworkSound');
             fireworkSound.currentTime = 0;
-            fireworkSound.volume = 0.6;
+            fireworkSound.volume = isMobile ? 0.4 : 0.6; // Lower volume on mobile
             fireworkSound.play().catch(() => {});
             particles = [];
-            const numBursts = 60 * intensity; // Enhanced with intensity multiplier
+            const numBursts = Math.floor((isMobile ? 40 : 60) * adjustedIntensity);
             const colors = [
                 '#ff6b9d', '#ffd6e8', '#fff', '#667eea', '#f5576c',
                 '#ff9a9e', '#fecfef', '#ffecd2', '#fcb69f', '#a8e6cf',
-                '#ffeb3b', '#4caf50', '#2196f3', '#e91e63', '#9c27b0' // Added more colors for variety
+                '#ffeb3b', '#4caf50', '#2196f3', '#e91e63', '#9c27b0'
             ];
             for (let i = 0; i < numBursts; i++) {
                 setTimeout(() => {
@@ -991,11 +1080,11 @@
                     const centerY = window.innerHeight / 2;
                     const x = centerX + (Math.random() - 0.5) * window.innerWidth * 0.4;
                     const y = centerY + (Math.random() - 0.5) * window.innerHeight * 0.4;
-                    const numParticles = (25 + Math.random() * 15) * intensity; // Scale particles with intensity
+                    const numParticles = Math.floor((isMobile ? 15 : 25 + Math.random() * 15) * adjustedIntensity);
                     const color = colors[Math.floor(Math.random() * colors.length)];
                     for (let j = 0; j < numParticles; j++) {
                         const angle = (Math.PI * 2 * j) / numParticles + Math.random() * 0.5;
-                        const velocity = (2.5 + Math.random() * 3.5) * intensity; // Faster with intensity
+                        const velocity = (2.5 + Math.random() * 3.5) * adjustedIntensity;
                         const velX = Math.cos(angle) * velocity;
                         const velY = Math.sin(angle) * velocity;
                         const size = 1.5 + Math.random() * 3;
@@ -1006,7 +1095,7 @@
                             x, y, velX, velY, size, life, decay, gravity, color, trail: []
                         });
                     }
-                }, i * (80 / intensity)); // Faster bursts with higher intensity
+                }, i * (80 / adjustedIntensity));
             }
             if (animationId) cancelAnimationFrame(animationId);
             animateFireworks();
@@ -1017,7 +1106,7 @@
             fireworksCtx.fillRect(0, 0, fireworksCtx.canvas.width, fireworksCtx.canvas.height);
             particles = particles.filter(p => {
                 p.trail.push({ x: p.x, y: p.y });
-                if (p.trail.length > 10) p.trail.shift(); // Longer trails
+                if (p.trail.length > (isMobile ? 5 : 10)) p.trail.shift(); // Shorter trails on mobile
                 p.x += p.velX;
                 p.y += p.velY;
                 p.velY += p.gravity;
@@ -1035,8 +1124,10 @@
                         fireworksCtx.beginPath();
                         fireworksCtx.arc(point.x, point.y, trailRadius, 0, Math.PI * 2);
                         fireworksCtx.fillStyle = p.color;
-                        fireworksCtx.shadowBlur = 8 + trailAlpha * 10;
-                        fireworksCtx.shadowColor = p.color;
+                        if (!isMobile) {
+                            fireworksCtx.shadowBlur = 8 + trailAlpha * 10;
+                            fireworksCtx.shadowColor = p.color;
+                        }
                         fireworksCtx.fill();
                         fireworksCtx.restore();
                     }
@@ -1046,15 +1137,19 @@
                     fireworksCtx.beginPath();
                     fireworksCtx.arc(p.x, p.y, radius, 0, Math.PI * 2);
                     fireworksCtx.fillStyle = p.color;
-                    fireworksCtx.shadowBlur = 15;
-                    fireworksCtx.shadowColor = p.color;
+                    if (!isMobile) {
+                        fireworksCtx.shadowBlur = 15;
+                        fireworksCtx.shadowColor = p.color;
+                    }
                     fireworksCtx.fill();
-                    // Add sparkle effect to particles
-                    fireworksCtx.beginPath();
-                    fireworksCtx.arc(p.x + Math.random() * 4 - 2, p.y + Math.random() * 4 - 2, radius * 0.5, 0, Math.PI * 2);
-                    fireworksCtx.fillStyle = '#fff';
-                    fireworksCtx.globalAlpha = alpha * 0.5;
-                    fireworksCtx.fill();
+                    // Add sparkle effect to particles only on desktop
+                    if (!isMobile) {
+                        fireworksCtx.beginPath();
+                        fireworksCtx.arc(p.x + Math.random() * 4 - 2, p.y + Math.random() * 4 - 2, radius * 0.5, 0, Math.PI * 2);
+                        fireworksCtx.fillStyle = '#fff';
+                        fireworksCtx.globalAlpha = alpha * 0.5;
+                        fireworksCtx.fill();
+                    }
                     fireworksCtx.restore();
                     return true;
                 }
@@ -1066,7 +1161,8 @@
         }
         // ===== SNOWFLAKES =====
         function createSnowflakes() {
-            for (let i = 0; i < 30; i++) {
+            const snowCount = isMobile ? 15 : 30; // Fewer snowflakes on mobile
+            for (let i = 0; i < snowCount; i++) {
                 setTimeout(() => {
                     const snow = document.createElement('div');
                     snow.className = 'snowflake';
@@ -1083,7 +1179,7 @@
         // ===== AUDIO MANAGEMENT =====
         function playMusic() {
             const music = document.getElementById('bgMusic');
-            music.volume = 0.3;
+            music.volume = isMobile ? 0.2 : 0.3; // Lower on mobile
             if (music.paused) {
                 music.play().catch(() => {
                     document.body.addEventListener('click', () => music.play(), { once: true });
@@ -1093,7 +1189,7 @@
         function playTypeSound() {
             const typeSound = document.getElementById('typeSound');
             typeSound.currentTime = 0;
-            typeSound.volume = 0.2;
+            typeSound.volume = isMobile ? 0.1 : 0.2; // Lower on mobile
             typeSound.play().catch(() => {});
         }
         // ===== TEXT TYPING EFFECT =====
@@ -1142,7 +1238,7 @@
             } else if (stepNumber === 4) {
                 showPromises();
             } else if (stepNumber === 6) {
-                setTimeout(() => createFireworks(1.5), 3500); // Enhanced intensity in final step
+                setTimeout(() => createFireworks(isMobile ? 1 : 1.5), 3500); // Adjust intensity
             }
         }
         // ===== COUNTDOWN LOGIC =====
@@ -1189,8 +1285,8 @@
             const climaxMusic = document.getElementById('climaxMusic');
             const text = document.getElementById('climaxText');
             const container = document.querySelector('.climax-container');
-            bgMusic.volume = 0.1;
-            climaxMusic.volume = 0.5;
+            bgMusic.volume = isMobile ? 0.05 : 0.1;
+            climaxMusic.volume = isMobile ? 0.3 : 0.5;
             climaxMusic.play().catch(() => {});
             const sequences = [
                 { delay: 900, text: `Ê ${CONFIG.yourName} nè...`, shake: 0.4 },
@@ -1205,7 +1301,7 @@
                 }, seq.delay);
             });
             // Add fireworks during climax for dramatic effect
-            setTimeout(() => createFireworks(0.8), 20000);
+            setTimeout(() => createFireworks(isMobile ? 0.5 : 0.8), 20000);
             setTimeout(() => nextStep(4), 27000);
         }
         // ===== PROMISES DISPLAY =====
@@ -1249,13 +1345,15 @@
         function acceptLove() {
             createPhotoExplosion();
             // Add fireworks on acceptance for celebration
-            setTimeout(() => createFireworks(1.2), 500);
+            setTimeout(() => createFireworks(isMobile ? 0.8 : 1.2), 500);
             setTimeout(() => nextStep(6), 1000);
         }
         // ===== PHOTO EXPLOSION =====
         function createPhotoExplosion() {
             const centerX = window.innerWidth / 2;
             const centerY = window.innerHeight / 2;
+            const photoSize = isMobile ? 80 : 120; // Smaller photos on mobile
+            const maxDistance = Math.min(window.innerWidth, window.innerHeight) * 0.35; // Scale distance to screen size
             CONFIG.finalPhotos.forEach((photoData, i) => {
                 setTimeout(() => {
                     const photo = document.createElement('img');
@@ -1264,23 +1362,28 @@
                     photo.alt = 'Memory Photo';
                     photo.dataset.caption = photoData.caption;
                     photo.dataset.index = i;
-                    photo.style.left = (centerX - 60) + 'px';
-                    photo.style.top = (centerY - 60) + 'px';
+                    photo.style.width = photoSize + 'px';
+                    photo.style.height = photoSize + 'px';
+                    photo.style.left = (centerX - photoSize / 2) + 'px';
+                    photo.style.top = (centerY - photoSize / 2) + 'px';
                     photo.style.transform = 'scale(0) rotate(0deg)';
                     photo.style.opacity = '0';
                     document.body.appendChild(photo);
                     const angle = (Math.PI * 2 * i) / CONFIG.finalPhotos.length;
-                    const distance = 300 + Math.random() * 200;
-                    const targetX = centerX + Math.cos(angle) * distance;
-                    const targetY = centerY + Math.sin(angle) * distance;
+                    const distance = (isMobile ? maxDistance * 0.6 : maxDistance) + Math.random() * (maxDistance * 0.3);
+                    let targetX = centerX + Math.cos(angle) * distance;
+                    let targetY = centerY + Math.sin(angle) * distance;
+                    // Clamp to viewport bounds to prevent flying off-screen
+                    targetX = Math.max(photoSize / 2, Math.min(window.innerWidth - photoSize / 2, targetX));
+                    targetY = Math.max(photoSize / 2, Math.min(window.innerHeight - photoSize / 2, targetY));
                     const rotation = Math.random() * 360;
-                    photo.dataset.originalX = targetX - 60;
-                    photo.dataset.originalY = targetY - 60;
+                    photo.dataset.originalX = targetX - photoSize / 2;
+                    photo.dataset.originalY = targetY - photoSize / 2;
                     photo.dataset.originalRotation = rotation;
                     setTimeout(() => {
                         photo.style.transition = 'all 2s cubic-bezier(0.34, 1.56, 0.64, 1)';
-                        photo.style.left = (targetX - 60) + 'px';
-                        photo.style.top = (targetY - 60) + 'px';
+                        photo.style.left = (targetX - photoSize / 2) + 'px';
+                        photo.style.top = (targetY - photoSize / 2) + 'px';
                         photo.style.transform = `scale(1) rotate(${rotation}deg)`;
                         photo.style.opacity = '1';
                     }, 50);
@@ -1337,6 +1440,7 @@
             draggedPhoto = null;
         }
         function resetPhotoPosition(photo) {
+            const photoSize = photo.style.width ? parseInt(photo.style.width) : 120;
             photo.style.transition = 'all 1.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
             photo.style.left = photo.dataset.originalX + 'px';
             photo.style.top = photo.dataset.originalY + 'px';
@@ -1372,7 +1476,7 @@
         }
         // ===== EXTRA FUN =====
         function extraFun() {
-            createFireworks(2); // High intensity for extra fun
+            createFireworks(isMobile ? 1.2 : 2); // Adjust intensity
             // Similar non-blocking alert as deny
             const notification = document.createElement('div');
             notification.className = 'notification-style notification-left';
@@ -1387,8 +1491,14 @@
         document.getElementById('step0').addEventListener('click', () => {
             playMusic();
             // Small fireworks on entrance click
-            setTimeout(() => createFireworks(0.5), 100);
+            setTimeout(() => createFireworks(isMobile ? 0.3 : 0.5), 100);
             nextStep('countdown');
+        });
+        // Handle orientation change
+        window.addEventListener('orientationchange', () => {
+            setTimeout(() => {
+                location.reload(); // Simple reload for better reset on mobile
+            }, 100);
         });
         // ===== INITIALIZATION =====
         window.addEventListener('load', () => {
