@@ -494,9 +494,10 @@
             cursor: grab;
             transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
             user-select: none;
-            touch-action: pan-x pan-y;
+            touch-action: manipulation;
             will-change: transform;
             loading: lazy;
+            pointer-events: auto;
         }
         .flying-photo:hover {
             transform: scale(1.1);
@@ -906,7 +907,7 @@
             finalPhotos: [
                 {
                     src: "assets/images/final1.jpg",
-                    caption: "Nhớ Này khum kkk, mà không bit ai kkk 😏"
+                    caption: "Nhớ Này khum kkk 😏"
                 },
                 {
                     src: "assets/images/final2.jpg",
@@ -918,11 +919,11 @@
                 },
                 {
                     src: "assets/images/final4.jpg",
-                    caption: "Bữa ăn quậy phá, cháy túi luôn 🍽️"
+                    caption: "Buổi chơi quậy phá, 🍽️"
                 },
                 {
                     src: "assets/images/final5.jpg",
-                    caption: "Bên nhau bạn 👬"
+                    caption: "Bên nhau bạn nhé 👬"
                 },
                 {
                     src: "assets/images/final6.jpg",
@@ -1352,7 +1353,7 @@
         function createPhotoExplosion() {
             const centerX = window.innerWidth / 2;
             const centerY = window.innerHeight / 2;
-            const photoSize = isMobile ? 80 : 120; // Smaller photos on mobile
+            const photoSize = isMobile ? 80 : 140; // Tăng size trên desktop để dễ click
             const maxDistance = Math.min(window.innerWidth, window.innerHeight) * 0.35; // Scale distance to screen size
             CONFIG.finalPhotos.forEach((photoData, i) => {
                 setTimeout(() => {
@@ -1368,6 +1369,8 @@
                     photo.style.top = (centerY - photoSize / 2) + 'px';
                     photo.style.transform = 'scale(0) rotate(0deg)';
                     photo.style.opacity = '0';
+                    // Thêm pointer-events: auto để dễ click
+                    photo.style.pointerEvents = 'auto';
                     document.body.appendChild(photo);
                     const angle = (Math.PI * 2 * i) / CONFIG.finalPhotos.length;
                     const distance = (isMobile ? maxDistance * 0.6 : maxDistance) + Math.random() * (maxDistance * 0.3);
@@ -1395,52 +1398,68 @@
                 }, i * 150);
             });
         }
-        // ===== PHOTO EVENT SETUP =====
+        // ===== PHOTO EVENT SETUP (FIXED WITH POINTER EVENTS AND THRESHOLD) =====
         function setupPhotoEvents(photo) {
-            photo.addEventListener('dblclick', () => openModal(photo.src, photo.dataset.caption));
-            photo.addEventListener('mousedown', startDrag);
-            photo.addEventListener('touchstart', startDrag, { passive: false });
-        }
-        // ===== DRAG LOGIC =====
-        function startDrag(e) {
-            e.preventDefault();
-            draggedPhoto = e.currentTarget;
-            draggedPhoto.classList.add('dragging');
-            draggedPhoto.style.transition = 'none';
-            const rect = draggedPhoto.getBoundingClientRect();
-            const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-            const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-            offsetX = clientX - rect.left;
-            offsetY = clientY - rect.top;
-            document.addEventListener('mousemove', drag, { passive: false });
-            document.addEventListener('touchmove', drag, { passive: false });
-            document.addEventListener('mouseup', stopDrag);
-            document.addEventListener('touchend', stopDrag);
-            if (resetTimeout) {
-                clearTimeout(resetTimeout);
-                resetTimeout = null;
+            let startX, startY, startTime, isDragging = false;
+            let moveHandler, upHandler;
+            photo.addEventListener('pointerdown', (e) => {
+                e.preventDefault();
+                startX = e.clientX;
+                startY = e.clientY;
+                startTime = Date.now();
+                isDragging = false;
+                moveHandler = handlePointerMove;
+                upHandler = handlePointerUp;
+                document.addEventListener('pointermove', moveHandler);
+                document.addEventListener('pointerup', upHandler);
+            });
+
+            function handlePointerMove(e) {
+                if (startX === undefined || !photo) return;
+                if (isDragging) {
+                    drag(e);
+                    return;
+                }
+                const dist = Math.hypot(e.clientX - startX, e.clientY - startY);
+                if (dist > 10) { // Threshold to start drag
+                    isDragging = true;
+                    draggedPhoto = photo;
+                    photo.classList.add('dragging');
+                    photo.style.transition = 'none';
+                    const rect = photo.getBoundingClientRect();
+                    offsetX = e.clientX - rect.left;
+                    offsetY = e.clientY - rect.top;
+                    drag(e); // Initial drag position
+                }
+            }
+
+            function handlePointerUp(e) {
+                document.removeEventListener('pointermove', moveHandler);
+                document.removeEventListener('pointerup', upHandler);
+                if (isDragging) {
+                    photo.classList.remove('dragging');
+                    photo.style.transition = 'all 0.3s ease-out';
+                    if (resetTimeout) clearTimeout(resetTimeout);
+                    resetTimeout = setTimeout(() => resetPhotoPosition(photo), 5000);
+                    draggedPhoto = null;
+                } else if (Date.now() - startTime < 300) { // Short tap to open modal
+                    openModal(photo.src, photo.dataset.caption);
+                }
+                startX = undefined;
+                startY = undefined;
+                isDragging = false;
             }
         }
+        // ===== DRAG LOGIC (KEEP AS IS) =====
         function drag(e) {
             if (!draggedPhoto) return;
-            const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-            const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+            const clientX = e.clientX;
+            const clientY = e.clientY;
             draggedPhoto.style.left = (clientX - offsetX) + 'px';
             draggedPhoto.style.top = (clientY - offsetY) + 'px';
         }
-        function stopDrag() {
-            if (!draggedPhoto) return;
-            draggedPhoto.classList.remove('dragging');
-            draggedPhoto.style.transition = 'all 0.3s ease-out';
-            document.removeEventListener('mousemove', drag);
-            document.removeEventListener('touchmove', drag);
-            document.removeEventListener('mouseup', stopDrag);
-            document.removeEventListener('touchend', stopDrag);
-            resetTimeout = setTimeout(() => resetPhotoPosition(draggedPhoto), 5000);
-            draggedPhoto = null;
-        }
         function resetPhotoPosition(photo) {
-            const photoSize = photo.style.width ? parseInt(photo.style.width) : 120;
+            const photoSize = photo.style.width ? parseInt(photo.style.width) : 140; // Update size
             photo.style.transition = 'all 1.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
             photo.style.left = photo.dataset.originalX + 'px';
             photo.style.top = photo.dataset.originalY + 'px';
